@@ -10,7 +10,7 @@ void leftButtonISR()
   {
    sMenuSelection++;
   }
-  else if(selection < 4 && sMenuSelection == 1)
+  else if(selection < 5 && sMenuSelection == 1)
   {
      selection++; 
   }

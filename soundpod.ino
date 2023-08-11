@@ -8,7 +8,7 @@
 SoftwareSerial customSoftwareSerial(12,13);
 DFRobotDFPlayerMini myDFPlayer;
 
-U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE); // Khởi tạo đối tượng U8g2
 
 const uint8_t leftButton = 2;
 const uint8_t selectionButton = 5;
@@ -20,6 +20,7 @@ volatile bool updateScreen = true;
 
 boolean playing = false;
 boolean inSideMenuSelection = true;
+boolean isLoop = false;
 
 // Variables
 uint8_t filecounts;                     // total number of files in current folder
@@ -37,7 +38,7 @@ unsigned long lastTimepassed = 0;
 
 void setup(void) {
     //Initializing u8g2 library
-    Serial.begin(9200);
+    Serial.begin(9600);
   u8g2.begin();  
   u8g2.firstPage(); 
   do{
@@ -69,6 +70,8 @@ void setup(void) {
   file   = EEPROM.read(2);
   if(file >= 255)
   file = 1;
+
+  isLoop = EEPROM.read(3);
   
   delay(1000);
   myDFPlayer.volume(volume);  //Set volume value. From 0 to 30
@@ -124,7 +127,11 @@ void loop() {
             EEPROM.write(2, file);
           }
        }
-       else if(selection == 4)
+       else if(selection == 4){
+          isLoop = !isLoop; 
+          EEPROM.write(3, isLoop);
+       }
+       else if(selection == 5)
        {
          //back to side menu
          selection = 1;
@@ -142,11 +149,11 @@ void loop() {
      }
      else if(selection == 2)
      {
-        selection = 4;
+        selection = 5;
         myDFPlayer.EQ(eq);
         EEPROM.write(1, eq);
      }
-     else if(selection == 4)
+     else if(selection == 5)
      {
          //back to side menu
          selection = 1;
@@ -156,7 +163,7 @@ void loop() {
      delay(200);
   }
 
-//Updating the dispaly
+////Updating the dispaly
   if(updateScreen)
   {
     u8g2.firstPage();  
@@ -183,11 +190,16 @@ void loop() {
 
     switch (type) {
       case DFPlayerPlayFinished:
-        if (file < filecounts) {
-          file++;
+        if(isLoop){
           myDFPlayer.playFolder(folder, file);
           EEPROM.write(2, file);
-          updateScreen = true;
+        } else {
+          if (file < filecounts) {
+            file++;
+            myDFPlayer.playFolder(folder, file);
+            EEPROM.write(2, file);
+            updateScreen = true;
+          }
         }
         break;
       default:

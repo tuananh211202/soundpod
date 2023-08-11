@@ -44,7 +44,7 @@ void settings()
    u8g2.print(eq);
    u8g2.setDrawColor(1);
    
-    if(selection == 4 && !inSideMenuSelection)
+    if(selection == 5 && !inSideMenuSelection)
     {
     u8g2.setDrawColor(0);
     }
@@ -125,39 +125,50 @@ void player()
   
   if(selection == 1 && !inSideMenuSelection)
     {
-    u8g2.drawRBox(midOriginX-7,midOriginY-5,11,9,2);
+    u8g2.drawRBox(midOriginX-20,midOriginY-5,11,9,2);
     u8g2.setDrawColor(0);
     }    
     u8g2.setFont( u8g2_font_open_iconic_play_1x_t);
-    u8g2.drawGlyph(midOriginX-5,midOriginY+4,73);
+    u8g2.drawGlyph(midOriginX-18,midOriginY+4,73);
     u8g2.setDrawColor(1);
 
     if(selection == 2 && !inSideMenuSelection)
     {
-    u8g2.drawRBox(midOriginX+7.5,midOriginY-8.5,16.5,15,3);
+    u8g2.drawRBox(midOriginX-6.5,midOriginY-8.5,16.5,15,3);
     u8g2.setDrawColor(0);
     }
     u8g2.setFont(u8g2_font_open_iconic_play_2x_t);
     if(playing)
     {
-      u8g2.drawGlyph(midOriginX+7.5,midOriginY+7.5,68);
+      u8g2.drawGlyph(midOriginX-6.5,midOriginY+7.5,68);
     }
     else
     {
-     u8g2.drawGlyph(midOriginX+7.5,midOriginY+7.5,69);
+     u8g2.drawGlyph(midOriginX-6.5,midOriginY+7.5,69);
     }
     u8g2.setDrawColor(1);
 
     if(selection == 3 && !inSideMenuSelection)
     {
-    u8g2.drawRBox(midOriginX+25,midOriginY-5,12,9,2);
+    u8g2.drawRBox(midOriginX+10,midOriginY-5,12,9,2);
     u8g2.setDrawColor(0);
     }
     u8g2.setFont(u8g2_font_open_iconic_play_1x_t);
-    u8g2.drawGlyph(midOriginX+27,midOriginY+4,74);
+    u8g2.drawGlyph(midOriginX+12,midOriginY+4,74);
     u8g2.setDrawColor(1);
 
-     if(selection == 4 && !inSideMenuSelection)
+    if(selection == 4 && !inSideMenuSelection){
+      u8g2.drawRBox(midOriginX+28,midOriginY-5,12,9,2);
+      u8g2.setDrawColor(0);
+    }
+
+    u8g2.setFont(u8g2_font_open_iconic_all_1x_t);
+    if(!isLoop)
+      u8g2.drawGlyph(midOriginX+30,midOriginY+4,242);
+    else u8g2.drawGlyph(midOriginX+30,midOriginY+4,243);
+    u8g2.setDrawColor(1);
+
+     if(selection == 5 && !inSideMenuSelection)
     {
     u8g2.setDrawColor(0);
     }
